@@ -123,7 +123,7 @@ var DecadeView = React.createClass({
                 onClick={onClick}
                 onKeyUp={onEnter(onClick)}
             >
-                {yearText}
+                {moment().year(yearText).toDate().toLocaleDateString(props.calendar, {year: 'numeric'})}
             </td>
         )
     },
@@ -140,7 +140,7 @@ DecadeView.getHeaderText = function(value, props) {
 
     year = year - offset - 1
 
-    return year + ' - ' + (year + 11)
+    return moment().year(year).toDate().toLocaleDateString(props.calendar, {year: 'numeric'}) + ' - ' + moment().year(year + 11).toDate().toLocaleDateString(props.calendar, {year: 'numeric'})
 }
 
 module.exports = DecadeView

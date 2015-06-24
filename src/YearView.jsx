@@ -122,7 +122,7 @@ var YearView = React.createClass({
 })
 
 YearView.getHeaderText = function(moment, props) {
-    return toMoment(moment, null, { locale: props.locale }).format('YYYY')
+    return toMoment(moment, null, { locale: props.locale }).toDate().toLocaleDateString(props.calendar, {year: 'numeric'})
 }
 
 module.exports = YearView

@@ -49,4 +49,6 @@ module.exports = {
 
     onRenderDay: null,
     renderDay: null,
+    calendarHeaderFormat: null,
+    calendar: null
 }

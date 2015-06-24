@@ -627,7 +627,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	});
 
 	YearView.getHeaderText = function (moment, props) {
-	    return toMoment(moment, null, { locale: props.locale }).format('YYYY');
+	    return toMoment(moment, null, { locale: props.locale }).toDate().toLocaleDateString(props.calendar, { year: 'numeric' });
 	};
 
 	module.exports = YearView;
@@ -726,6 +726,8 @@ return /******/ (function(modules) { // webpackBootstrap
 
 	    onRenderDay: null,
 	    renderDay: null,
+	    calendarHeaderFormat: null,
+	    calendar: null
 	}
 
 /***/ },
@@ -1150,7 +1152,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	});
 
 	MonthView.getHeaderText = function (moment, props) {
-	    return toMoment(moment, null, { locale: props.locale }).format('MMMM YYYY');
+	    return toMoment(moment, null, { locale: props.locale }).toDate().toLocaleDateString(props.calendar, props.calendarHeaderFormat);
 	};
 
 	module.exports = MonthView;
@@ -1279,7 +1281,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	            className: classes.join(' '),
 	            onClick: onClick,
 	            onKeyUp: onEnter(onClick)
-	        }, yearText);
+	        }, moment().year(yearText).toDate().toLocaleDateString(props.calendar, { year: 'numeric' }));
 	    },
 
 	    handleClick: function handleClick(props, date, event) {
@@ -1293,7 +1295,7 @@ return /******/ (function(modules) { // webpackBootstrap
 
 	    year = year - offset - 1;
 
-	    return year + ' - ' + (year + 11);
+	    return moment().year(year).toDate().toLocaleDateString(props.calendar, { year: 'numeric' }) + ' - ' + moment().year(year + 11).toDate().toLocaleDateString(props.calendar, { year: 'numeric' });
 	};
 
 	module.exports = DecadeView;
