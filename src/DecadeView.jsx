@@ -140,7 +140,10 @@ DecadeView.getHeaderText = function(value, props) {
 
     year = year - offset - 1
 
-    return moment().year(year).toDate().toLocaleDateString(props.calendar, {year: 'numeric'}) + ' - ' + moment().year(year + 11).toDate().toLocaleDateString(props.calendar, {year: 'numeric'})
+    if(moment.locale() === 'ja')
+        return moment().year(year).toDate().toLocaleDateString(props.calendar, {year: 'numeric'}) + ' - ' + moment().year(year + 11).toDate().toLocaleDateString(props.calendar, {year: 'numeric'})
+    else
+        return year + ' - ' + (year + 11)
 }
 
 module.exports = DecadeView
