@@ -12462,7 +12462,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	            className: classes.join(' '),
 	            onClick: onClick,
 	            onKeyUp: onEnter(onClick)
-	        }, moment().year(yearText).toDate().toLocaleDateString(props.calendar, { year: 'numeric' }));
+	        }, moment.locale() === 'ja' ? moment().year(yearText).toDate().toLocaleDateString(props.calendar, { year: 'numeric' }) : yearText);
 	    },
 
 	    handleClick: function handleClick(props, date, event) {

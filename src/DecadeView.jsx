@@ -114,6 +114,8 @@ var DecadeView = React.createClass({
 
         var onClick = this.handleClick.bind(this, props, date)
 
+
+
         return (
             <td
                 role="link"
@@ -123,7 +125,9 @@ var DecadeView = React.createClass({
                 onClick={onClick}
                 onKeyUp={onEnter(onClick)}
             >
-                {moment().year(yearText).toDate().toLocaleDateString(props.calendar, {year: 'numeric'})}
+                {
+                    (moment.locale() === 'ja') ? moment().year(yearText).toDate().toLocaleDateString(props.calendar, {year: 'numeric'}): yearText
+                }
             </td>
         )
     },
