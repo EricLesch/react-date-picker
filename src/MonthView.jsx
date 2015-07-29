@@ -257,7 +257,7 @@ MonthView.getHeaderText = function(moment, props) {
     if(moment.locale() === 'ja')
         return toMoment(moment, null, {locale: props.locale}).toDate().toLocaleDateString(props.calendar, props.calendarHeaderFormat)
     else
-        return toMoment(moment, null, {locale: props.locale}).format('MMMM YYYY')
+        return toMoment(moment, null, { locale: props.locale }).format('MMMM') +' '+ FORMAT.getYearText(toMoment(moment, null, { locale: props.locale }).format('YYYY'))
 }
 
 module.exports = MonthView

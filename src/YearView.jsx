@@ -125,7 +125,7 @@ YearView.getHeaderText = function(moment, props) {
     if(moment.locale() === 'ja')
         return toMoment(moment, null, { locale: props.locale }).toDate().toLocaleDateString(props.calendar, {year: 'numeric'})
     else
-        return toMoment(moment, null, { locale: props.locale }).format('YYYY')
+        return FORMAT.getYearText(toMoment(moment, null, { locale: props.locale }).format('YYYY'))
 }
 
 module.exports = YearView

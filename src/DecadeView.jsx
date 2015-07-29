@@ -126,7 +126,7 @@ var DecadeView = React.createClass({
                 onKeyUp={onEnter(onClick)}
             >
                 {
-                    (moment.locale() === 'ja') ? moment().year(yearText).toDate().toLocaleDateString(props.calendar, {year: 'numeric'}): yearText
+                    (moment.locale() === 'ja') ? moment().year(yearText).toDate().toLocaleDateString(props.calendar, {year: 'numeric'}): FORMAT.getYearText(yearText)
                 }
             </td>
         )
@@ -147,7 +147,7 @@ DecadeView.getHeaderText = function(value, props) {
     if(moment.locale() === 'ja')
         return moment().year(year).toDate().toLocaleDateString(props.calendar, {year: 'numeric'}) + ' - ' + moment().year(year + 11).toDate().toLocaleDateString(props.calendar, {year: 'numeric'})
     else
-        return year + ' - ' + (year + 11)
+        return FORMAT.getYearText(year) + ' - ' + FORMAT.getYearText(year + 11)
 }
 
 module.exports = DecadeView
