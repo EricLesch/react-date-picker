@@ -126,7 +126,7 @@ var DecadeView = React.createClass({
                 onKeyUp={onEnter(onClick)}
             >
                 {
-                    (moment.locale() === 'ja') ? moment().year(yearText).toDate().toLocaleDateString(props.calendar, {year: 'numeric'}): FORMAT.getYearText(yearText)
+                    (moment.locale() === 'ja') ? moment().year(yearText).toDate().toLocaleDateString(props.calendar, { year: 'numeric' }) : (props.calendar === 'ja-JP-u-ca-japanese') ? FORMAT.getYearText(yearText): yearText
                 }
             </td>
         )
