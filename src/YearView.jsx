@@ -124,8 +124,10 @@ var YearView = React.createClass({
 YearView.getHeaderText = function(moment, props) {
     if(moment.locale() === 'ja')
         return toMoment(moment, null, { locale: props.locale }).toDate().toLocaleDateString(props.calendar, {year: 'numeric'})
-    else
+    else if (props.calendar === 'ja-JP-u-ca-japanese')
         return FORMAT.getYearText(toMoment(moment, null, { locale: props.locale }).format('YYYY'))
+    else
+        return year +  ' - ' + (year + 11);
 }
 
 module.exports = YearView

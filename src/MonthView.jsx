@@ -256,8 +256,10 @@ var MonthView = React.createClass({
 MonthView.getHeaderText = function(moment, props) {
     if(moment.locale() === 'ja')
         return toMoment(moment, null, {locale: props.locale}).toDate().toLocaleDateString(props.calendar, props.calendarHeaderFormat)
-    else
+    else if (props.calendar === 'ja-JP-u-ca-japanese')
         return toMoment(moment, null, { locale: props.locale }).format('MMMM') +' '+ FORMAT.getYearText(toMoment(moment, null, { locale: props.locale }).format('YYYY'))
+    else
+        return toMoment(moment, null, { locale: props.locale }).format('MMMM') +' '+ toMoment(moment, null, { locale: props.locale }).format('YYYY')
 }
 
 module.exports = MonthView

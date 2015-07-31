@@ -627,7 +627,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	});
 
 	YearView.getHeaderText = function (moment, props) {
-	    if (moment.locale() === 'ja') return toMoment(moment, null, { locale: props.locale }).toDate().toLocaleDateString(props.calendar, { year: 'numeric' });else return FORMAT.getYearText(toMoment(moment, null, { locale: props.locale }).format('YYYY'));
+	    if (moment.locale() === 'ja') return toMoment(moment, null, { locale: props.locale }).toDate().toLocaleDateString(props.calendar, { year: 'numeric' });else if (props.calendar === 'ja-JP-u-ca-japanese') return FORMAT.getYearText(toMoment(moment, null, { locale: props.locale }).format('YYYY'));else return year + ' - ' + (year + 11);
 	};
 
 	module.exports = YearView;
@@ -12347,7 +12347,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	});
 
 	MonthView.getHeaderText = function (moment, props) {
-	    if (moment.locale() === 'ja') return toMoment(moment, null, { locale: props.locale }).toDate().toLocaleDateString(props.calendar, props.calendarHeaderFormat);else return toMoment(moment, null, { locale: props.locale }).format('MMMM') + ' ' + FORMAT.getYearText(toMoment(moment, null, { locale: props.locale }).format('YYYY'));
+	    if (moment.locale() === 'ja') return toMoment(moment, null, { locale: props.locale }).toDate().toLocaleDateString(props.calendar, props.calendarHeaderFormat);else if (props.calendar === 'ja-JP-u-ca-japanese') return toMoment(moment, null, { locale: props.locale }).format('MMMM') + ' ' + FORMAT.getYearText(toMoment(moment, null, { locale: props.locale }).format('YYYY'));else return toMoment(moment, null, { locale: props.locale }).format('MMMM') + ' ' + toMoment(moment, null, { locale: props.locale }).format('YYYY');
 	};
 
 	module.exports = MonthView;
@@ -12490,7 +12490,7 @@ return /******/ (function(modules) { // webpackBootstrap
 
 	    year = year - offset - 1;
 
-	    if (moment.locale() === 'ja') return moment().year(year).toDate().toLocaleDateString(props.calendar, { year: 'numeric' }) + ' - ' + moment().year(year + 11).toDate().toLocaleDateString(props.calendar, { year: 'numeric' });else return FORMAT.getYearText(year) + ' - ' + FORMAT.getYearText(year + 11);
+	    if (moment.locale() === 'ja') return moment().year(year).toDate().toLocaleDateString(props.calendar, { year: 'numeric' }) + ' - ' + moment().year(year + 11).toDate().toLocaleDateString(props.calendar, { year: 'numeric' });else if (props.calendar === 'ja-JP-u-ca-japanese') return FORMAT.getYearText(year) + ' - ' + FORMAT.getYearText(year + 11);else return year + ' - ' + (year + 11);
 	};
 
 	module.exports = DecadeView;
