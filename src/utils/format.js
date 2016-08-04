@@ -1,7 +1,8 @@
-'use strict'
+'use strict';
 
-var CONFIG   = require('../config')
-var toMoment = require('../toMoment')
+var CONFIG   = require('../config');
+var toMoment = require('../toMoment');
+var moment = require('moment');
 
 function f(mom, format){
     return toMoment(mom).format(format)
