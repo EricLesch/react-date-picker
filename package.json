@@ -21,7 +21,8 @@
   "dependencies": {
     "moment": "^2.8.0",
     "normalize.css": "~3.0.2",
-    "object-assign": "^3.0.0"
+    "object-assign": "^3.0.0",
+    "react": "^15.3.0"
   },
   "peerDependencies": {
     "moment": ">=2.8.0",
@@ -32,8 +33,8 @@
     "css-loader": "^0.15.1",
     "extract-text-webpack-plugin": "^0.8.2",
     "file-loader": "^0.8.4",
-    "gulp": "^3.9.0",
-    "gulp-babel": "^5.1.0",
+    "gulp": "^3.9.1",
+    "gulp-babel": "^6.1.2",
     "jsdom": "^5.4.3",
     "json-loader": "^0.5.2",
     "mocha": "^2.2.4",
