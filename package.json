@@ -19,6 +19,7 @@
   "author": "ZippyUI <contact@zippyui.com>",
   "license": "MIT",
   "dependencies": {
+    "babel-cli": "^6.18.0",
     "moment": "^2.8.0",
     "normalize.css": "~3.0.2",
     "object-assign": "^3.0.0",

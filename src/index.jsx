@@ -1,21 +1,24 @@
-'use strict'
+'use strict';
 
-var React  = require('react')
+var React  = require('react');
 
-var moment   = require('moment')
-var assign   = require('object-assign')
-var asConfig = require('./utils/asConfig')
+var moment   = require('moment');
+var assign   = require('object-assign');
+var asConfig = require('./utils/asConfig');
 
-var MonthView  = require('./MonthView')
-var YearView   = require('./YearView')
-var DecadeView = require('./DecadeView')
-var Header     = require('./Header')
+var MonthView  = require('./MonthView');
+var YearView   = require('./YearView');
+var DecadeView = require('./DecadeView');
+var Header     = require('./Header');
 
-var toMoment   = require('./toMoment')
+var toMoment   = require('./toMoment');
+
+import { CALENDAR_TYPES } from './japaneseLanguageUtilities/enumerations/calendarTypes';
+import { toJDateString } from './japaneseLanguageUtilities/toJDateString';
 
 var hasOwn = function(obj, key){
-    return Object.prototype.hasOwnProperty.call(obj, key)
-}
+    return Object.prototype.hasOwnProperty.call(obj, key);
+};
 
 var onEnter = require('./onEnter');
 
@@ -23,7 +26,7 @@ var Views = {
     month : MonthView,
     year  : YearView,
     decade: DecadeView
-}
+};
 
 function emptyFn(){}
 
@@ -43,7 +46,7 @@ var DatePicker = React.createClass({
     },
 
     getViewOrder: function() {
-        return this.props.viewOrder || ['month', 'year', 'decade']
+        return this.props.viewOrder || ['month', 'year', 'decade'];
     },
 
     getDefaultProps: function() {
@@ -52,12 +55,12 @@ var DatePicker = React.createClass({
             defaultStyle: {
                 boxSizing: 'border-box'
             }
-        })
+        });
 
-        delete props.viewDate
-        delete props.date
+        delete props.viewDate;
+        delete props.date;
 
-        return props
+        return props;
     },
 
     getInitialState: function() {
@@ -65,58 +68,58 @@ var DatePicker = React.createClass({
             view       : this.props.defaultView,
             viewDate   : this.props.defaultViewDate,
             defaultDate: this.props.defaultDate
-        }
+        };
     },
 
     getViewName: function() {
         var view = this.props.view != null?
                     this.props.view:
-                    this.state.view
+                    this.state.view;
 
         return view || 'month'
     },
 
     addViewIndex: function(amount) {
-        var viewName = this.getViewName()
+        var viewName = this.getViewName();
 
-        var order = this.getViewOrder()
-        var index = order.indexOf(viewName)
+        var order = this.getViewOrder();
+        var index = order.indexOf(viewName);
 
-        index += amount
+        index += amount;
 
-        return index % order.length
+        return index % order.length;
     },
 
     getNextViewName: function() {
-        return this.getViewOrder()[this.addViewIndex(1)]
+        return this.getViewOrder()[this.addViewIndex(1)];
     },
 
     getPrevViewName: function() {
-        return this.getViewOrder()[this.addViewIndex(-1)]
+        return this.getViewOrder()[this.addViewIndex(-1)];
     },
 
     getView: function() {
-        var views = this.props.views || Views
-        return views[this.getViewName()] || views.month
+        var views = this.props.views || Views;
+        return views[this.getViewName()] || views.month;
     },
 
     getViewFactory: function() {
-        var view = this.getView()
+        var view = this.getView();
 
         if (React.createFactory && view && view.prototype && typeof view.prototype.render == 'function'){
-            view.__factory = view.__factory || React.createFactory(view)
-            view = view.__factory
+            view.__factory = view.__factory || React.createFactory(view);
+            view = view.__factory;
         }
 
-        return view
+        return view;
     },
 
     getViewDate: function() {
         var date = hasOwn(this.props, 'viewDate')?
                         this.props.viewDate:
-                        this.state.viewDate
+                        this.state.viewDate;
 
-        date = date || this.viewMoment || this.getDate() || new Date()
+        date = date || this.viewMoment || this.getDate() || new Date();
 
         if (moment.isMoment(date)){
             //in order to strip the locale - the date picker may have had its locale changed
@@ -125,58 +128,58 @@ var DatePicker = React.createClass({
             date = +date
         }
 
-        date = this.toMoment(date)
+        date = this.toMoment(date);
 
-        return date
+        return date;
     },
 
     getDate: function() {
-        var date
+        var date;
 
         if (hasOwn(this.props, 'date')){
-            date = this.props.date
+            date = this.props.date;
         } else {
-            date = this.state.defaultDate
+            date = this.state.defaultDate;
         }
 
-        return date? this.toMoment(date): null
+        return date? this.toMoment(date): null;
     },
 
     render: function() {
 
-        var props = assign({}, this.props)
+        var props = assign({}, this.props);
 
         this.toMoment = function(value, dateFormat){
-            return toMoment(value, dateFormat || props.dateFormat, { locale: props.locale })
-        }
+            return toMoment(value, dateFormat || props.dateFormat, { locale: props.locale });
+        };
 
-        var view  = this.getViewFactory()
+        var view  = this.getViewFactory();
 
-        props.date = this.getDate()
+        props.date = this.getDate();
 
-        var dateString = (props.date == null ? '' : props.date.format(this.props.dateFormat))
+        var dateString = (props.date == null ? '' : props.date.format(this.props.dateFormat));
 
-        props.viewDate   = this.viewMoment = this.getViewDate()
-        props.locale     = this.props.locale
-        props.localeData = moment.localeData(props.locale)
+        props.viewDate   = this.viewMoment = this.getViewDate();
+        props.locale     = this.props.locale;
+        props.localeData = moment.localeData(props.locale);
 
-        props.renderDay   = this.props.renderDay
-        props.onRenderDay = this.props.onRenderDay
+        props.renderDay   = this.props.renderDay;
+        props.onRenderDay = this.props.onRenderDay;
 
         // props.onChange  = this.handleChange
         // props.onSelect  = this.handleSelect
 
-        var className = (this.props.className || '') + ' date-picker'
+        var className = (this.props.className || '') + ' date-picker';
 
-        props.style = this.prepareStyle(props)
+        props.style = this.prepareStyle(props);
 
-        var viewProps = props
-        var viewProps = asConfig(props)
+        var viewProps = asConfig(props);
 
-        viewProps.dateString = dateString
-        viewProps.localeData = props.localeData
-        viewProps.onSelect = this.handleSelect
-        viewProps.onChange = this.handleChange
+        viewProps.dateString = dateString;
+        viewProps.localeData = props.localeData;
+        viewProps.onSelect = this.handleSelect;
+        viewProps.onChange = this.handleChange;
+        viewProps.currentLanguage = props.currentLanguage;
 
         return (
             <div className={className} style={props.style} {...this.props}>
@@ -196,25 +199,25 @@ var DatePicker = React.createClass({
     },
 
     prepareStyle: function(props) {
-        var style = assign({}, props.defaultStyle, props.style)
+        var style = assign({}, props.defaultStyle, props.style);
 
-        return style
+        return style;
     },
 
     renderFooter: function(props) {
         if (this.props.hideFooter){
-            return
+            return;
         }
 
         if (this.props.today){
-            console.warn('Please use "todayText" prop instead of "today"!')
+            console.warn('Please use "todayText" prop instead of "today"!');
         }
         if (this.props.gotoSelected){
-            console.warn('Please use "gotoSelectedText" prop instead of "gotoSelected"!')
+            console.warn('Please use "gotoSelectedText" prop instead of "gotoSelected"!');
         }
 
-        var todayText        = this.props.todayText || 'Today'
-        var gotoSelectedText = this.props.gotoSelectedText || 'Go to selected'
+        var todayText        = this.props.todayText || 'Today';
+        var gotoSelectedText = this.props.gotoSelectedText || 'Go to selected';
 
         var footerProps = {
             todayText       : todayText,
@@ -223,15 +226,15 @@ var DatePicker = React.createClass({
             gotoSelected    : this.gotoSelected.bind(this, props),
             date            : props.date,
             viewDate        : props.viewDate
-        }
+        };
 
-        var result
+        var result;
         if (typeof this.props.footerFactory == 'function'){
-            result = this.props.footerFactory(footerProps)
+            result = this.props.footerFactory(footerProps);
         }
 
         if (result !== undefined){
-            return result
+            return result;
         }
 
         return (
@@ -255,22 +258,21 @@ var DatePicker = React.createClass({
                     {gotoSelectedText}
                 </div>
             </div>
-        )
+        );
     },
 
     gotoNow: function() {
-        this.gotoDate(+new Date())
+        this.gotoDate(+new Date());
     },
 
     gotoSelected: function(props) {
-        this.gotoDate(props.date || +new Date())
+        this.gotoDate(props.date || +new Date());
     },
 
     gotoDate: function(value) {
+        this.setView('month');
 
-        this.setView('month')
-
-        this.setViewDate(value)
+        this.setViewDate(value);
     },
 
     getViewColspan: function(){
@@ -278,27 +280,27 @@ var DatePicker = React.createClass({
             month : 5,
             year  : 2,
             decade: 2
-        }
+        };
 
-        return map[this.getViewName()]
+        return map[this.getViewName()];
     },
 
     renderHeader: function(view, props) {
-
         if (this.props.hideHeader){
-            return
+            return;
         }
 
-        props = props || this.props
+        props = props || this.props;
 
-        var viewDate   = this.getViewDate()
-        var headerText = this.getView().getHeaderText(viewDate, props)
+        var viewDate   = this.getViewDate();
+        var headerText = this.getView().getHeaderText(viewDate, props);
 
-        var colspan = this.getViewColspan()
-        var prev    = this.props.navPrev
-        var next    = this.props.navNext
+        var colspan = this.getViewColspan();
+        var prev    = this.props.navPrev;
+        var next    = this.props.navNext;
 
-        return <Header
+        return (
+            <Header
                 prevText={prev}
                 nextText={next}
                 colspan={colspan}
@@ -306,16 +308,17 @@ var DatePicker = React.createClass({
                 onNext={this.handleNavNext}
                 onChange={this.handleViewChange}
             >
-            {headerText}
-        </Header>
+                {headerText}
+            </Header>
+        );
     },
 
     handleRenderDay: function (date) {
-        return (this.props.renderDay || emptyFn)(date) || []
+        return (this.props.renderDay || emptyFn)(date) || [];
     },
 
     handleViewChange: function() {
-        this.setView(this.getNextViewName())
+        this.setView(this.getNextViewName());
     },
 
     /**
@@ -328,69 +331,66 @@ var DatePicker = React.createClass({
      *
      */
     setView: function(view) {
-
         if (typeof this.props.onViewChange == 'function'){
-            this.props.onViewChange(view)
+            this.props.onViewChange(view);
         }
 
         if (this.props.view == null){
             this.setState({
                 view: view
-            })
+            });
         }
     },
 
     setViewDate: function(moment) {
+        moment = this.toMoment(moment);
 
-        moment = this.toMoment(moment)
-
-        var fn = this.props.onViewDateChange
+        var fn = this.props.onViewDateChange;
 
         if (typeof fn == 'function'){
+            var text = moment.format(this.props.dateFormat);
+            var view = this.getViewName();
 
-            var text = moment.format(this.props.dateFormat)
-            var view = this.getViewName()
-
-            fn(text, moment, view)
+            fn(text, moment, view);
         }
 
         if (!hasOwn(this.props, 'viewDate')){
             this.setState({
                 viewDate: moment
-            })
+            });
         }
     },
 
     getNext: function() {
-        var current = this.getViewDate()
-        var toMoment = this.toMoment
+        var current = this.getViewDate();
+        var toMoment = this.toMoment;
 
         return ({
             month: function() {
-                return toMoment(current).add(1, 'month')
+                return toMoment(current).add(1, 'month');
             },
             year: function() {
-                return toMoment(current).add(1, 'year')
+                return toMoment(current).add(1, 'year');
             },
             decade: function() {
-                return toMoment(current).add(10, 'year')
+                return toMoment(current).add(10, 'year');
             }
-        })[this.getViewName()]()
+        })[this.getViewName()]();
     },
 
     getPrev: function() {
-        var current = this.getViewDate()
-        var toMoment = this.toMoment
+        var current = this.getViewDate();
+        var toMoment = this.toMoment;
 
         return ({
             month: function() {
-                return toMoment(current).add(-1, 'month')
+                return toMoment(current).add(-1, 'month');
             },
             year: function() {
-                return toMoment(current).add(-1, 'year')
+                return toMoment(current).add(-1, 'year');
             },
             decade: function() {
-                return toMoment(current).add(-10, 'year')
+                return toMoment(current).add(-10, 'year');
             }
         })[this.getViewName()]()
     },
@@ -398,80 +398,82 @@ var DatePicker = React.createClass({
     handleNavigation: function(direction, event) {
         var viewMoment = direction == -1?
                             this.getPrev():
-                            this.getNext()
+                            this.getNext();
 
-        this.setViewDate(viewMoment)
+        this.setViewDate(viewMoment);
 
         if (typeof this.props.onNav === 'function'){
-            var text = viewMoment.format(this.props.dateFormat)
-            var view = this.getViewName()
+            var text = viewMoment.format(this.props.dateFormat);
+            var view = this.getViewName();
 
-            this.props.onNav(text, viewMoment, view, direction, event)
+            this.props.onNav(text, viewMoment, view, direction, event);
         }
     },
 
     handleNavPrev: function(event) {
-        this.handleNavigation(-1, event)
+        this.handleNavigation(-1, event);
     },
 
     handleNavNext: function(event) {
-        this.handleNavigation(1, event)
+        this.handleNavigation(1, event);
     },
 
     handleChange: function(date, event) {
-        date = this.toMoment(date)
+        date = this.toMoment(date);
 
         if (this.props.navOnDateClick){
-            var viewDate = this.toMoment(this.getViewDate())
+            var viewDate = this.toMoment(this.getViewDate());
 
             //it's not enough to compare months, since the year can change as well
             //
             //also it's ok to hardcode the format here
-            var viewMonth = viewDate.format('YYYY-MM')
-            var dateMonth = date.format('YYYY-MM')
+            var viewMonth = viewDate.format('YYYY-MM');
+            var dateMonth = date.format('YYYY-MM');
 
             if (dateMonth > viewMonth){
-                this.handleNavNext(event)
+                this.handleNavNext(event);
             } else if (dateMonth < viewMonth){
-                this.handleNavPrev(event)
+                this.handleNavPrev(event);
             }
         }
 
-        var text = date.format(this.props.dateFormat)
+        var text = date.format(this.props.dateFormat);
 
         if (!hasOwn(this.props, 'date')){
             this.setState({
                 defaultDate: text
-            })
+            });
         }
 
-        ;(this.props.onChange || emptyFn)(text, date, event)
+        (this.props.onChange || emptyFn)(text, date, event);
     },
 
     handleSelect: function(date, event) {
-        var viewName = this.getViewName()
+        var viewName = this.getViewName();
 
         var property = ({
             decade: 'year',
             year  : 'month'
-        })[viewName]
+        })[viewName];
 
-        var value      = date.get(property)
-        var viewMoment = this.toMoment(this.getViewDate()).set(property, value)
-        var view       = this.getPrevViewName()
+        var value      = date.get(property);
+        var viewMoment = this.toMoment(this.getViewDate()).set(property, value);
+        var view       = this.getPrevViewName();
 
-        this.setViewDate(viewMoment)
+        this.setViewDate(viewMoment);
 
-        this.setView(view)
+        this.setView(view);
 
         if (typeof this.props.onSelect === 'function'){
-            var text = viewMoment.format(this.props.dateFormat)
-            this.props.onSelect(text, viewMoment, view, event)
+            var text = viewMoment.format(this.props.dateFormat);
+            this.props.onSelect(text, viewMoment, view, event);
         }
     }
+});
 
-})
+DatePicker.views = Views;
 
-DatePicker.views = Views
+DatePicker.CALENDAR_TYPES = CALENDAR_TYPES;
+DatePicker.toJDateString = toJDateString;
 
-module.exports = DatePicker
+module.exports = DatePicker;
