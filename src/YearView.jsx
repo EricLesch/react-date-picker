@@ -13,6 +13,7 @@ import {CALENDAR_TYPES} from './japaneseLanguageUtilities/enumerations/calendarT
 import {LANGUAGES} from './japaneseLanguageUtilities/enumerations/languages';
 
 import {getJapaneseImperialYear} from './japaneseLanguageUtilities/getJapaneseImperialYear';
+import {getEnglishImperialYear} from './japaneseLanguageUtilities/getEnglishImperialYear';
 
 var TODAY;
 
@@ -125,11 +126,11 @@ var YearView = React.createClass({
     }
 });
 
-YearView.getHeaderText = function (moment, props) {
+YearView.getHeaderText = function (momentDate, props) {
     var currentLanguage = props.currentLanguage;
     var calendar = props.calendar;
 
-    var date = moment.toDate();
+    var date = momentDate.toDate();
     var yearView;
 
     yearView = 'headerText';
@@ -138,12 +139,13 @@ YearView.getHeaderText = function (moment, props) {
         if (calendar === CALENDAR_TYPES.IMPERIAL) {
             yearView = getJapaneseImperialYear(date);
         } else if (calendar === CALENDAR_TYPES.GREGORIAN) {
-
+            yearView = momentDate.format('YYYY');
         }
     } else if (currentLanguage === LANGUAGES.ENGLISH_LANGUAGE) {
         if (calendar === CALENDAR_TYPES.IMPERIAL) {
+            yearView = getEnglishImperialYear(date);
         } else if (calendar === CALENDAR_TYPES.GREGORIAN) {
-
+            yearView = momentDate.format('YYYY');
         }
     }
 
