@@ -133,8 +133,6 @@ YearView.getHeaderText = function (momentDate, props) {
     var date = momentDate.toDate();
     var yearView;
 
-    yearView = 'headerText';
-
     if (currentLanguage === LANGUAGES.JAPANESE_LANGUAGE) {
         if (calendar === CALENDAR_TYPES.IMPERIAL) {
             yearView = getJapaneseImperialYear(date);
@@ -148,16 +146,6 @@ YearView.getHeaderText = function (momentDate, props) {
             yearView = momentDate.format('YYYY');
         }
     }
-
-    // if(moment.locale() === 'ja') {
-    //     yearView = toMoment(moment, null, { locale: props.locale }).toDate().toLocaleDateString(props.calendar, {year: 'numeric'});
-    // }
-    // else if (props.calendar === CALENDAR_TYPES.IMPERIAL) {
-    //     yearView = FORMAT.getYearText(toMoment(moment, null, { locale: props.locale }).format('YYYY'));
-    // }
-    // else {
-    //     yearView = year +  ' - ' + (year + 11);
-    // }
 
     return yearView;
 };
