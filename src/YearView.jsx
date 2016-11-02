@@ -1,25 +1,29 @@
 'use strict';
 
-var React  = require('react');
+var React = require('react');
 var moment = require('moment');
 
-var FORMAT   = require('./utils/format');
+var FORMAT = require('./utils/format');
 var asConfig = require('./utils/asConfig');
 var toMoment = require('./toMoment');
-var onEnter  = require('./onEnter');
-var assign   = require('object-assign');
+var onEnter = require('./onEnter');
+var assign = require('object-assign');
 
 import {CALENDAR_TYPES} from './japaneseLanguageUtilities/enumerations/calendarTypes';
+import {LANGUAGES} from './japaneseLanguageUtilities/enumerations/languages';
+
+import {getJapaneseImperialYear} from './japaneseLanguageUtilities/getJapaneseImperialYear';
 
 var TODAY;
 
-function emptyFn(){}
+function emptyFn() {
+}
 
 var YearView = React.createClass({
 
     displayName: 'YearView',
 
-    getDefaultProps: function() {
+    getDefaultProps: function () {
         return asConfig();
     },
 
@@ -29,12 +33,12 @@ var YearView = React.createClass({
      * @param  {Moment/Date/Number} value
      * @return {Moment[]}
      */
-    getMonthsInYear: function(value){
+    getMonthsInYear: function (value) {
         var start = moment(value).startOf('year');
         var result = [];
         var i = 0;
 
-        for (; i < 12; i++){
+        for (; i < 12; i++) {
             result.push(moment(start));
             start.add(1, 'month');
         }
@@ -42,14 +46,14 @@ var YearView = React.createClass({
         return result;
     },
 
-    render: function() {
+    render: function () {
         TODAY = +moment().startOf('day');
 
         var props = assign({}, this.props);
 
         var viewMoment = props.viewMoment = moment(this.props.viewDate);
 
-        if (props.date){
+        if (props.date) {
             props.moment = moment(props.date).startOf('month');
         }
 
@@ -58,7 +62,7 @@ var YearView = React.createClass({
         return (
             <table className="dp-table dp-year-view">
                 <tbody>
-                    {this.renderMonths(props, monthsInView)}
+                {this.renderMonths(props, monthsInView)}
                 </tbody>
             </table>
         )
@@ -69,33 +73,33 @@ var YearView = React.createClass({
      * @param  {Moment[]} days
      * @return {React.DOM}
      */
-    renderMonths: function(props, days) {
-        var nodes      = days.map(function(date){
+    renderMonths: function (props, days) {
+        var nodes = days.map(function (date) {
             return this.renderMonth(props, date);
         }, this);
 
-        var len        = days.length;
-        var buckets    = [];
+        var len = days.length;
+        var buckets = [];
         var bucketsLen = Math.ceil(len / 4);
 
         var i = 0;
 
-        for ( ; i < bucketsLen; i++){
+        for (; i < bucketsLen; i++) {
             buckets.push(nodes.slice(i * 4, (i + 1) * 4));
         }
 
-        return buckets.map(function(bucket, i){
-            return <tr key={"row" + i} >{bucket}</tr>;
+        return buckets.map(function (bucket, i) {
+            return <tr key={"row" + i}>{bucket}</tr>;
         });
     },
 
-    renderMonth: function(props, date) {
+    renderMonth: function (props, date) {
         var monthText = FORMAT.month(date, props.monthFormat);
         var classes = ["dp-cell dp-month"];
 
         var dateTimestamp = +date;
 
-        if (dateTimestamp == props.moment){
+        if (dateTimestamp == props.moment) {
             classes.push('dp-value');
         }
 
@@ -115,17 +119,33 @@ var YearView = React.createClass({
         );
     },
 
-    handleClick: function(props, date, event) {
+    handleClick: function (props, date, event) {
         event.target.value = date;
         (props.onSelect || emptyFn)(date, event);
     }
 });
 
-YearView.getHeaderText = function(moment, props) {
-    debugger;
+YearView.getHeaderText = function (moment, props) {
     var currentLanguage = props.currentLanguage;
+    var calendar = props.calendar;
 
+    var date = moment.toDate();
     var yearView;
+
+    yearView = 'headerText';
+
+    if (currentLanguage === LANGUAGES.JAPANESE_LANGUAGE) {
+        if (calendar === CALENDAR_TYPES.IMPERIAL) {
+            yearView = getJapaneseImperialYear(date);
+        } else if (calendar === CALENDAR_TYPES.GREGORIAN) {
+
+        }
+    } else if (currentLanguage === LANGUAGES.ENGLISH_LANGUAGE) {
+        if (calendar === CALENDAR_TYPES.IMPERIAL) {
+        } else if (calendar === CALENDAR_TYPES.GREGORIAN) {
+
+        }
+    }
 
     // if(moment.locale() === 'ja') {
     //     yearView = toMoment(moment, null, { locale: props.locale }).toDate().toLocaleDateString(props.calendar, {year: 'numeric'});
@@ -136,8 +156,6 @@ YearView.getHeaderText = function(moment, props) {
     // else {
     //     yearView = year +  ' - ' + (year + 11);
     // }
-
-    yearView = 'headerText';
 
     return yearView;
 };

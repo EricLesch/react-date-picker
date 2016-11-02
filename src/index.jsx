@@ -146,7 +146,6 @@ var DatePicker = React.createClass({
     },
 
     render: function() {
-
         var props = assign({}, this.props);
 
         this.toMoment = function(value, dateFormat){
@@ -165,9 +164,6 @@ var DatePicker = React.createClass({
 
         props.renderDay   = this.props.renderDay;
         props.onRenderDay = this.props.onRenderDay;
-
-        // props.onChange  = this.handleChange
-        // props.onSelect  = this.handleSelect
 
         var className = (this.props.className || '') + ' date-picker';
 

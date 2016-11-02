@@ -13,9 +13,9 @@ import {CALENDAR_TYPES} from './japaneseLanguageUtilities/enumerations/calendarT
 import {LANGUAGES} from './japaneseLanguageUtilities/enumerations/languages';
 
 import {getDecadeViewHeaderText} from './japaneseLanguageUtilities/getDecadeViewHeaderText';
-import {getEra} from './japaneseLanguageUtilities/enumerations/getEra';
-import {getImperialYear} from './japaneseLanguageUtilities/getImperialYear';
-import {ERA_SYMBOLS} from './japaneseLanguageUtilities/enumerations/eraSymbols';
+import {getEnglishImperialYear} from './japaneseLanguageUtilities/getEnglishImperialYear';
+import {getJapaneseImperialYear} from './japaneseLanguageUtilities/getJapaneseImperialYear';
+
 
 var TODAY;
 
@@ -39,19 +39,19 @@ var DecadeView = React.createClass({
         var year = moment(value).get('year');
         var offset = year % 10;
 
-        year = year - offset - 1;
+        var startDate = moment(value).endOf('year').subtract(offset + 1, 'years');
 
-        var result = [];
+        // year = year - offset - 1;
+
+        var results = [];
         var i = 0;
 
-        var start = moment(year, 'YYYY').startOf('year');
-
         for (; i < 12; i++){
-            result.push(moment(start));
-            start.add(1, 'year');
+            results.push(moment(startDate));
+            startDate.add(1, 'year');
         }
 
-        return result
+        return results;
     },
 
     render: function() {
@@ -102,9 +102,9 @@ var DecadeView = React.createClass({
     },
 
     renderYear: function(props, date, index, arr) {
-        debugger;
         var imperialYear, era;
         var yearText = FORMAT.year(date, props.yearFormat);
+        date = moment(date).endOf('year');
         var currentLanguage = props.currentLanguage;
         var classes = ["dp-cell dp-year"];
 
@@ -128,31 +128,17 @@ var DecadeView = React.createClass({
 
         if (currentLanguage === LANGUAGES.JAPANESE_LANGUAGE) {
             if (props.calendar === CALENDAR_TYPES.IMPERIAL) {
-                era = ERA_SYMBOLS[currentLanguage][getEra(date)];
-                imperialYear = getImperialYear(date);
-                text = `${era}${imperialYear}`;
+                text = getJapaneseImperialYear(date);
             } else if (props.calendar === CALENDAR_TYPES.GREGORIAN) {
                 text =  yearText;
             }
         } else if (currentLanguage === LANGUAGES.ENGLISH_LANGUAGE) {
             if (props.calendar === CALENDAR_TYPES.IMPERIAL) {
-                era = ERA_SYMBOLS[currentLanguage][getEra(date)];
-                imperialYear = getImperialYear(date);
-                text = `${era}${imperialYear}`;
+                text = getEnglishImperialYear(date);
             } else if (props.calendar === CALENDAR_TYPES.GREGORIAN) {
                text =  yearText;
             }
         }
-
-        // if (moment.locale() === 'ja') {
-        //    text =  moment().year(yearText).toDate().toLocaleDateString(props.calendar, { year: 'numeric' });
-        // } else {
-        //    if (props.calendar === CALENDAR_TYPES.IMPERIAL)  {
-        //        text = FORMAT.getYearText(yearText);
-        //    } else {
-        //        text = yearText;
-        //    }
-        // }
 
         return (
             <td
