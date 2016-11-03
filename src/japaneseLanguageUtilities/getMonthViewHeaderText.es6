@@ -16,7 +16,7 @@ export const getMonthViewHeaderText = (momentDate, props) => {
         if (calendar === CALENDAR_TYPES.IMPERIAL) {
             yearText = getJapaneseImperialYear(momentDate.toDate());
             month = momentDate.format('MMMM');
-            headerText = `${month} ${yearText}`;
+            headerText = `${yearText} ${month} `;
         } else if (calendar === CALENDAR_TYPES.GREGORIAN) {
             date = toMoment(momentDate, null, {locale: props.locale}).toDate();
             headerText = date.toLocaleDateString(props.calendar, props.calendarHeaderFormat);
@@ -24,10 +24,12 @@ export const getMonthViewHeaderText = (momentDate, props) => {
     } else if (currentLanguage === LANGUAGES.ENGLISH_LANGUAGE) {
         if (props.calendar === CALENDAR_TYPES.IMPERIAL) {
             yearText = getEnglishImperialYear(momentDate.toDate());
-            month = momentDate.format('MMMM');
-            headerText = `${month} ${yearText}`;
-        } else {
-            headerText = toMoment(momentDate, null, {locale: props.locale}).format('MMMM') + ' ' + toMoment(momentDate, null, {locale: props.locale}).format('YYYY');
+            month = momentDate.format('MM');
+            headerText = `${yearText}/${month}`;
+        } else if (calendar === CALENDAR_TYPES.GREGORIAN) {
+            yearText = momentDate.format('YYYY');
+            month = momentDate.format('MM');
+            headerText = `${yearText}/${month}`;
         }
     }
 

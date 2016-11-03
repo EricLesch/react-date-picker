@@ -12,6 +12,6 @@ export const ERA_SYMBOLS = {
         [ERAS.HEISEI_ERA]: '平成',
         [ERAS.MEIJI_ERA]: '明治',
         [ERAS.SHOWA_ERA]: '昭和',
-        [ERAS.TAISHO_ERA]: '平成'
+        [ERAS.TAISHO_ERA]: '大正'
     }
 };
