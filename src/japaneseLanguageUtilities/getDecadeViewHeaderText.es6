@@ -22,11 +22,12 @@ export const getDecadeViewHeaderText = (date, props) => {
         if (props.calendar === CALENDAR_TYPES.IMPERIAL) {
             startingYearString = getJapaneseImperialYear(startingDate);
             endingYearString = getJapaneseImperialYear(endingDate);
+            headerText = `${startingYearString}年- ${endingYearString}年`;
         } else if (props.calendar === CALENDAR_TYPES.GREGORIAN){
             startingYearString = moment(startingDate).toDate().toLocaleDateString(CALENDAR_TYPES.GREGORIAN, {year: 'numeric'});
             endingYearString = moment(endingDate).toDate().toLocaleDateString(CALENDAR_TYPES.GREGORIAN, {year: 'numeric'});
+            headerText = `${startingYearString} - ${endingYearString}`;
         }
-        headerText = `${startingYearString} - ${endingYearString}`;
     }
     else if (currentLanguage === LANGUAGES.ENGLISH_LANGUAGE) {
         if (props.calendar === CALENDAR_TYPES.GREGORIAN)  {

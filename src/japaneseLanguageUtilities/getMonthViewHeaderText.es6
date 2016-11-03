@@ -16,7 +16,7 @@ export const getMonthViewHeaderText = (momentDate, props) => {
         if (calendar === CALENDAR_TYPES.IMPERIAL) {
             yearText = getJapaneseImperialYear(momentDate.toDate());
             month = momentDate.format('MMMM');
-            headerText = `${yearText} ${month} `;
+            headerText = `${yearText}年 ${month}`;
         } else if (calendar === CALENDAR_TYPES.GREGORIAN) {
             date = toMoment(momentDate, null, {locale: props.locale}).toDate();
             headerText = date.toLocaleDateString(props.calendar, props.calendarHeaderFormat);

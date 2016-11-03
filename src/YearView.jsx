@@ -139,6 +139,7 @@ YearView.getHeaderText = function (momentDate, props) {
         } else if (calendar === CALENDAR_TYPES.GREGORIAN) {
             yearView = momentDate.format('YYYY');
         }
+        yearView = `${yearView}年`
     } else if (currentLanguage === LANGUAGES.ENGLISH_LANGUAGE) {
         if (calendar === CALENDAR_TYPES.IMPERIAL) {
             yearView = getEnglishImperialYear(date);
